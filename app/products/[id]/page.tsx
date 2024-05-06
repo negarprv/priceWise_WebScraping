@@ -1,5 +1,6 @@
 import PriceInfoCard from "@/components/PriceInfoCard";
-import { getProductById } from "@/lib/actions";
+import ProductCard from "@/components/ProductCard";
+import { getProductById, getSimilarProducts } from "@/lib/actions";
 import { formatNumber } from "@/lib/utils/utils";
 import { Product } from "@/types";
 import Image from "next/image";
@@ -14,6 +15,8 @@ const ProductDetails = async ({ params: { id } }: Props) => {
   const product: Product = await getProductById(id);
 
   if (!product) redirect("/");
+
+  const similarProducts = await getSimilarProducts(id);
 
   return (
     <div className=" product-container">
@@ -77,7 +80,6 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               </div>
             </div>
           </div>
-
           <div className="product-info">
             <div className=" flex flex-col gap-2">
               <p className=" text-[34px] text-secondary font-bold">
@@ -125,7 +127,6 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               </p>
             </div>
           </div>
-
           <div className=" my-7 flex flex-col gap-5">
             <div className=" flex gap-5 flex-wrap">
               <PriceInfoCard
@@ -163,8 +164,46 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               />
             </div>
           </div>
+          Modal
         </div>
       </div>
+
+      <div className="flex flex-col gap-16">
+        <div className=" flex flex-col gap-5">
+          <h3 className=" text-2xl text-secondary font-semibold">
+            Product Descrption
+          </h3>
+
+          <div className="flex flex-col gap-4">
+            {product?.description?.split("\n")}
+          </div>
+        </div>
+
+        <button className="btn w-fit mx-autp flex items-center  justify-center gap-3 min-w-[200px]">
+          <Image
+            src="/assets/icons/bag.svg"
+            height={22}
+            width={22}
+            alt="check"
+          />
+
+          <Link href="/" className="text-base text-white">
+            Buy Now
+          </Link>
+        </button>
+      </div>
+
+      {similarProducts && similarProducts?.length > 0 && (
+        <div className=" py-14 flex flex-col gap-2 w-full">
+          <p className=" section-text">Similar Products</p>
+
+          <div className=" flex flex-wrap gap-10 w-full mt-7">
+            {similarProducts.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
