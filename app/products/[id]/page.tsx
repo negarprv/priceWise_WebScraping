@@ -1,8 +1,10 @@
+import Model from "@/components/Model";
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
 import { getProductById, getSimilarProducts } from "@/lib/actions";
 import { formatNumber } from "@/lib/utils/utils";
 import { Product } from "@/types";
+
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -147,7 +149,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 borderColor="#b6dbff"
               />
               <PriceInfoCard
-                title="Current Price"
+                title="Highest Price"
                 iconSrc="/assets/icons/arrow-up.svg"
                 value={`${product.currency} ${formatNumber(
                   product.highestPrice
@@ -155,7 +157,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 borderColor="#b6dbff"
               />
               <PriceInfoCard
-                title="Current Price"
+                title="Lowest Price"
                 iconSrc="/assets/icons/arrow-down.svg"
                 value={`${product.currency} ${formatNumber(
                   product.lowestPrice
@@ -164,7 +166,8 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               />
             </div>
           </div>
-          Modal
+
+          <Model />
         </div>
       </div>
 
