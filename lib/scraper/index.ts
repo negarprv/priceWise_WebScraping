@@ -1,12 +1,11 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
-import { title } from "process";
+
 import {
   extractCurrency,
   extractDescription,
   extractPrice,
 } from "../utils/utils";
-import image from "next/image";
 
 export async function scrapeAmazonProduct(url: string) {
   if (!url) return;
@@ -81,7 +80,7 @@ export async function scrapeAmazonProduct(url: string) {
       description,
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
-      average: Number(currentPrice) || Number(originalPrice),
+      averagePrice: Number(currentPrice) || Number(originalPrice),
     };
 
     return data;
