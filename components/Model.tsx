@@ -1,19 +1,29 @@
 "use client";
 
-import {
-  CloseButton,
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-  Transition,
-  TransitionChild,
-} from "@headlessui/react";
+import { addUserEmailToProduct } from "@/lib/actions";
+import { Dialog, Transition, TransitionChild } from "@headlessui/react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 
-const Model = () => {
+interface Props {
+  productId: string;
+}
+
+const Model = ({ productId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    await addUserEmailToProduct(productId, email);
+
+    setIsSubmitting(false);
+    setEmail("");
+    closeModal();
+  };
 
   const openModal = () => {
     setIsOpen(true);
@@ -90,7 +100,7 @@ const Model = () => {
                   </p>
                 </div>
 
-                <form className=" flex flex-col mt-5">
+                <form onSubmit={handleSubmit} className=" flex flex-col mt-5">
                   <label
                     htmlFor="email"
                     className=" text-sm font-medium text-gray-700"
@@ -107,6 +117,8 @@ const Model = () => {
                     />
 
                     <input
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
                       type="email"
                       id="email"
@@ -116,7 +128,7 @@ const Model = () => {
                   </div>
 
                   <button type="submit" className=" dialog-btn">
-                    Track
+                    {isSubmitting ? "Submitting" : "Track"}
                   </button>
                 </form>
               </div>

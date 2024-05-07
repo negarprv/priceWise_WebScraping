@@ -167,7 +167,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
             </div>
           </div>
 
-          <Model />
+          <Model productId={id} />
         </div>
       </div>
 
